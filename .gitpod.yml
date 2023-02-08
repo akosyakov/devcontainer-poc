@@ -1,0 +1,16 @@
+image: gitpod/workspace-base:latest
+tasks:
+  - command: |
+      git clone https://github.com/microsoft/vscode-remote-try-java /workspace/vscode-remote-try-java && true
+      gp sync-done content-init
+    name: Init Content
+  - init: |
+      curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+      source ~/.bashrc
+      nvm install --lts
+      npm install -g @devcontainers/cli
+    command: |
+      gp sync-await content-init
+      devcontainer up --workspace-folder=/workspace/vscode-remote-try-java
+    name: Run Dev Container
+  
