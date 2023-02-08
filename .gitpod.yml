@@ -1,16 +1,13 @@
-image: gitpod/workspace-base:latest
+image:
+  file: .gitpod.Dockerfile
 tasks:
   - command: |
-      git clone https://github.com/microsoft/vscode-remote-try-java /workspace/vscode-remote-try-java && true
-      gp sync-done content-init
-    name: Init Content
-  - init: |
-      curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
-      source ~/.bashrc
-      nvm install --lts
-      npm install -g @devcontainers/cli
-    command: |
-      gp sync-await content-init
-      devcontainer up --workspace-folder=/workspace/vscode-remote-try-java
+      gp ports await 26000
+      gp preview $(gp url 26000)?folder=/workspaces/vscode-remote-try-java --external
+    name: Preview
+  - command: |
+      git clone https://github.com/akosyakov/vscode-remote-try-java /workspace/vscode-remote-try-java && true
+      ./start.sh
     name: Run Dev Container
+
   
